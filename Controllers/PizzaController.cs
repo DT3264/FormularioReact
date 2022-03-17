@@ -50,13 +50,13 @@ public class PizzaController : ControllerBase
     
 
     [HttpPost]
-    public IActionResult Create(PizzaA newPizza)
+    public IActionResult Create(PizzaRequest newPizza)
     {
         var pizza = _service.Create(newPizza);
         return CreatedAtAction(nameof(GetById), new { id = pizza!.Id }, pizza);
     }
     [HttpPost("updatePizza")]
-    public IActionResult UpdatePizza(PizzaA pizza)
+    public IActionResult UpdatePizza(PizzaRequest pizza)
     {
         var pizzaToUpdate = _service.GetById(pizza.id);
 

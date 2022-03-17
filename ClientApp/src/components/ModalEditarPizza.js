@@ -6,6 +6,28 @@ export default function ModalEditarPizza(props) {
         props.setFormData({ ...props.formData, [e.target.name]: e.target.value })
     }
 
+    const updatePizza = async (data) => {
+        if(data.toppings == null){
+            data.toppings = [];
+        }
+        const pizza = {
+            "id": data.id == null || data.id==="" ? 0 : data.id,
+            "name": data.name,
+            "sauce": parseInt(data.sauce),
+            "toppings": data.toppings.map(x => parseInt(x)),
+        }
+        if (data.operacion === "elimina") {
+            await axios.delete(`api/pizza/${data.id}`);
+        }
+        else if (data.operacion === "actualiza") {
+            await axios.post(`api/pizza/updatePizza`, pizza);
+        }
+        else if (data.operacion === "agregar") {
+            await axios.post(`api/pizza`, pizza);
+        }
+        return;
+    }
+
     const hideForm = () => {
         props.setFormData({
             ...props.formData,
@@ -16,31 +38,6 @@ export default function ModalEditarPizza(props) {
             "toppings": [],
             "show": 0
         });
-    }
-
-    const updatePizza = async (data) => {
-        if(data.toppings == null){
-            data.toppings = [];
-        }
-        // console.log(data);
-        // console.log(props.sauces)
-        const pizza = {
-            "id": data.id == null || data.id=="" ? 0 : data.id,
-            "name": data.name,
-            "sauce": parseInt(data.sauce),
-            "toppings": data.toppings.map(x => parseInt(x)),
-        }
-        console.log(pizza);
-        if (data.operacion === "elimina") {
-            await axios.delete(`api/pizza/${data.id}`);
-        }
-        else if (data.operacion === "actualiza") {
-            await axios.post(`api/pizza/updatePizza`, pizza).then(r  => console.log(r));
-        }
-        else if (data.operacion === "agregar") {
-            await axios.post(`api/pizza`, pizza).then(r => console.log(r));
-        }
-        return;
     }
 
     const saveAndHideForm = async () => {
@@ -94,8 +91,9 @@ export default function ModalEditarPizza(props) {
                     onChange={
                         e =>
                             props.setFormData({
-                                ...props.formData, [e.target.name]:
-                                    [].slice.call(e.target.selectedOptions).map(item => parseInt(item.value))
+                                ...props.formData, 
+                                [e.target.name]:
+                                    Array.from(e.target.selectedOptions, item => parseInt(item.value))
                             })
                     }
                     multiple

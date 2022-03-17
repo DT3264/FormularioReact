@@ -62,7 +62,7 @@ public class PizzaService
     //     return newPizza;
     // }
 
-    public Pizza? Create(PizzaA newPizza)
+    public Pizza? Create(PizzaRequest newPizza)
     {
         var pizza = new Pizza
         {
@@ -109,7 +109,7 @@ public class PizzaService
 
     }
 
-    public void UpdatePizza(PizzaA pizza)
+    public void UpdatePizza(PizzaRequest pizza)
     {
         var pizzaToUpdate = GetByIdT(pizza.id);
         if (pizzaToUpdate == null) return;

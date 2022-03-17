@@ -1,4 +1,4 @@
-public class PizzaA
+public class PizzaRequest
     {
         public int id { get; set; }
         public string? name { get; set; }
